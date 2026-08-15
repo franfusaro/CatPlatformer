@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityStandardAssets.CrossPlatformInput;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
@@ -9,7 +9,6 @@ public class Player : MonoBehaviour
     const string WALKING_ANIMATION_NAME = "Walking";
     const string CLIMB_ANIMATION_NAME = "Climbing";
     const string DEATH_ANIMATION_NAME = "Dying";
-    const string JUMP_INPUT_KEY = "Jump";
     const string GROUND_LAYER_NAME = "Ground";
     const string LADDERS_LAYER_NAME = "Ladder";
     const string ENEMY_LAYER_NAME = "Enemy";
@@ -31,6 +30,40 @@ public class Player : MonoBehaviour
     CapsuleCollider2D myBodyCollider2D;
     BoxCollider2D myFeetCollider2D;
     float gravityScaleAtStart;
+
+    // Input
+    InputAction moveAction;
+    InputAction jumpAction;
+
+    void Awake()
+    {
+        moveAction = new InputAction("Move", InputActionType.Value, expectedControlType: "Vector2");
+        moveAction.AddCompositeBinding("2DVector")
+            .With("Up", "<Keyboard>/w")
+            .With("Up", "<Keyboard>/upArrow")
+            .With("Down", "<Keyboard>/s")
+            .With("Down", "<Keyboard>/downArrow")
+            .With("Left", "<Keyboard>/a")
+            .With("Left", "<Keyboard>/leftArrow")
+            .With("Right", "<Keyboard>/d")
+            .With("Right", "<Keyboard>/rightArrow");
+        moveAction.AddBinding("<Gamepad>/leftStick");
+
+        jumpAction = new InputAction("Jump", InputActionType.Button, binding: "<Keyboard>/space");
+        jumpAction.AddBinding("<Gamepad>/buttonSouth");
+    }
+
+    void OnEnable()
+    {
+        moveAction.Enable();
+        jumpAction.Enable();
+    }
+
+    void OnDisable()
+    {
+        moveAction.Disable();
+        jumpAction.Disable();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -62,7 +95,7 @@ public class Player : MonoBehaviour
     private void Jump()
     {
         if (!PlayerIsOnGround()) { return; }
-        if (CrossPlatformInputManager.GetButtonDown(JUMP_INPUT_KEY))
+        if (jumpAction.WasPressedThisFrame())
         {
             Vector2 jumpVelocityToAdd = new Vector2(0, jumpSpeed);
             myRigidBody.linearVelocity += jumpVelocityToAdd;
@@ -85,14 +118,14 @@ public class Player : MonoBehaviour
 
     private void MoveVertically()
     {
-        float controlThrow = CrossPlatformInputManager.GetAxis("Vertical"); //value between -1 to +1
+        float controlThrow = moveAction.ReadValue<Vector2>().y; //value between -1 to +1
         Vector2 playerClimbVelocity = new Vector2(myRigidBody.linearVelocity.x, controlThrow * climbSpeed);
         myRigidBody.linearVelocity = playerClimbVelocity;
     }
 
     private void MoveHorizontally()
     {
-        float controlThrow = CrossPlatformInputManager.GetAxis("Horizontal"); //value between -1 to +1
+        float controlThrow = moveAction.ReadValue<Vector2>().x; //value between -1 to +1
         Vector2 playerWalkVelocity = new Vector2(controlThrow * walkSpeed, myRigidBody.linearVelocity.y);
         myRigidBody.linearVelocity = playerWalkVelocity;
     }

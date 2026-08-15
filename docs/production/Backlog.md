@@ -17,7 +17,7 @@ Legend: **P1** now-ish · **P2** soon · **P3** eventually · ✅ done · 🔒 n
 | ID | Item | Pri | Ref | Status |
 |----|------|:---:|-----|--------|
 | 0.1 | Upgrade Unity 2018.3 → target LTS; fix compile errors | P1 | `docs/technical/baseline/DependencyAudit.md`, ADR-0001 | ✅ done |
-| 0.2 | Migrate CrossPlatformInput → Input System | P1 | `docs/technical/baseline/DependencyAudit.md` | 🔒 todo |
+| 0.2 | Migrate CrossPlatformInput → Input System | P1 | `docs/technical/baseline/DependencyAudit.md` | ✅ done |
 | 0.3 | Swap vendored 2d-extras → `com.unity.2d.tilemap.extras`; drop unused pkgs/modules | P1 | `docs/technical/baseline/DependencyAudit.md` | 🔒 todo |
 | 0.4 | Phase-1 bug fixes (see "Known defects" below) | P1 | `docs/technical/baseline/CodeReview.md` | todo |
 | 0.5 | Scaffolding: CLAUDE.md, .editorconfig, LICENSE, BACKLOG, ADR template | P1 | — | ✅ done |

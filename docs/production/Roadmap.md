@@ -15,8 +15,12 @@
 > **0.6** CI/CD workflow (`.github/workflows/ci.yml`; won't go green until the LTS upgrade).
 > **0.1 LTS upgrade done (2026-08-15):** Editor-driven upgrade to **Unity 6000.5.8f1**
 > (ADR-0001, Accepted); compile errors fixed; all 4 levels + MainMenu/OptionsMenu/Success
-> playtested clean on the new engine, 🚦 gate passed. **Next (needs Unity Editor, yours to
-> run):** 0.2 Input System → 0.3 package swaps. Then I do 0.4 bug fixes + 0.7 asmdefs.
+> playtested clean on the new engine, 🚦 gate passed.
+> **0.2 Input System migration done (2026-08-15):** `Player.cs` moved off the deprecated
+> `CrossPlatformInput` Standard Asset onto `UnityEngine.InputSystem` (code-only `InputAction`s,
+> no asset); vendored `CrossPlatformInput` folders deleted; `activeInputHandler` set to Both
+> so legacy-`StandaloneInputModule` menus keep working unchanged. **Next (needs Unity Editor,
+> yours to run):** playtest 0.2, then 0.3 package swaps. Then I do 0.4 bug fixes + 0.7 asmdefs.
 > Detail in `docs/production/Backlog.md`.
 
 ## How to use this
@@ -34,7 +38,7 @@
 | # | Deliverable | Ref |
 |---|-------------|-----|
 | 0.1 | ✅ Branch; upgrade **Unity 2018.3 → 6000.5.8f1**; fix compile errors | `docs/technical/baseline/DependencyAudit.md`, ADR-0001 |
-| 0.2 | Migrate input **CrossPlatformInput → Input System** | `docs/technical/baseline/DependencyAudit.md` |
+| 0.2 | ✅ Migrate input **CrossPlatformInput → Input System** | `docs/technical/baseline/DependencyAudit.md` |
 | 0.3 | Swap vendored **2d-extras → package**; remove unused packages/modules | `docs/technical/baseline/DependencyAudit.md` |
 | 0.4 | **Phase-1 bug fixes:** LoseScreen, teardown NRE, `SetDifficulty`, jump `+=`→`=`, player-identity checks | `docs/technical/baseline/CodeReview.md`, `docs/production/KnownRisks.md` |
 | 0.5 | **Scaffolding (Tier 1):** `CLAUDE.md`, `.editorconfig`, `LICENSE`, `docs/production/Backlog.md`, ADR template | `docs/production/Playbook.md` §1 |
