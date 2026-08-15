@@ -65,7 +65,7 @@ public class Player : MonoBehaviour
         if (CrossPlatformInputManager.GetButtonDown(JUMP_INPUT_KEY))
         {
             Vector2 jumpVelocityToAdd = new Vector2(0, jumpSpeed);
-            myRigidBody.velocity += jumpVelocityToAdd;
+            myRigidBody.linearVelocity += jumpVelocityToAdd;
         }
     }
 
@@ -86,15 +86,15 @@ public class Player : MonoBehaviour
     private void MoveVertically()
     {
         float controlThrow = CrossPlatformInputManager.GetAxis("Vertical"); //value between -1 to +1
-        Vector2 playerClimbVelocity = new Vector2(myRigidBody.velocity.x, controlThrow * climbSpeed);
-        myRigidBody.velocity = playerClimbVelocity;
+        Vector2 playerClimbVelocity = new Vector2(myRigidBody.linearVelocity.x, controlThrow * climbSpeed);
+        myRigidBody.linearVelocity = playerClimbVelocity;
     }
 
     private void MoveHorizontally()
     {
         float controlThrow = CrossPlatformInputManager.GetAxis("Horizontal"); //value between -1 to +1
-        Vector2 playerWalkVelocity = new Vector2(controlThrow * walkSpeed, myRigidBody.velocity.y);
-        myRigidBody.velocity = playerWalkVelocity;
+        Vector2 playerWalkVelocity = new Vector2(controlThrow * walkSpeed, myRigidBody.linearVelocity.y);
+        myRigidBody.linearVelocity = playerWalkVelocity;
     }
 
     private void ChangeClimbingAnimationState(bool state)
@@ -111,7 +111,7 @@ public class Player : MonoBehaviour
     {
         if (PlayerHasHorizontalSpeed())
         {
-            transform.localScale = new Vector2(Mathf.Sign(myRigidBody.velocity.x), 1f);
+            transform.localScale = new Vector2(Mathf.Sign(myRigidBody.linearVelocity.x), 1f);
         }
     }
 
@@ -122,12 +122,12 @@ public class Player : MonoBehaviour
 
     private bool PlayerHasHorizontalSpeed()
     {
-        return Mathf.Abs(myRigidBody.velocity.x) > Mathf.Epsilon;
+        return Mathf.Abs(myRigidBody.linearVelocity.x) > Mathf.Epsilon;
     }
 
     private bool PlayerHasVerticalSpeed()
     {
-        return Mathf.Abs(myRigidBody.velocity.y) > Mathf.Epsilon;
+        return Mathf.Abs(myRigidBody.linearVelocity.y) > Mathf.Epsilon;
     }
 
     private bool PlayerIsTouchingLadder()
@@ -140,7 +140,7 @@ public class Player : MonoBehaviour
         if (myBodyCollider2D.IsTouchingLayers(LayerMask.GetMask(ENEMY_LAYER_NAME, HAZARDS_LAYER_NAME)) && isAlive)
         {
             isAlive = false;
-            myRigidBody.velocity = deathKick;
+            myRigidBody.linearVelocity = deathKick;
             myAnimator.SetTrigger(DEATH_ANIMATION_NAME);
             myBodyCollider2D.enabled = false;
             StartCoroutine(ProcessDeath());

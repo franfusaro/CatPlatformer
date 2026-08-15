@@ -455,7 +455,7 @@ namespace UnityEditor
 				int hash = 0;
 				unchecked
 				{
-					hash = gameObject != null ? gameObject.GetInstanceID() : 0;
+					hash = gameObject != null ? gameObject.GetEntityId().GetHashCode() : 0;
 					hash = hash * 33 + m_Offset.GetHashCode();
 					hash = hash * 33 + m_Scale.GetHashCode();
 					hash = hash * 33 + m_Orientation.GetHashCode();
@@ -466,7 +466,7 @@ namespace UnityEditor
 	}
 
 	[CustomEditor(typeof(GameObjectBrush))]
-	public class GameObjectBrushEditor : GridBrushEditorBase
+	public class GameObjectBrushEditor : UnityEditor.Tilemaps.GridBrushEditorBase
 	{
 		public GameObjectBrush brush { get { return target as GameObjectBrush; } }
 
