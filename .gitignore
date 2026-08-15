@@ -37,4 +37,9 @@ sysinfo.txt
 
 .DS_Store
 
-Logs/Packages-Update.log
+Logs/
+UserSettings/
+*.slnx
+
+# Claude Code local/personal settings
+.claude/settings.local.json

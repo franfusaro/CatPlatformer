@@ -1,0 +1,111 @@
+name: CI — test, build & deploy
+
+# Wave 0 · 0.6 — GameCI test + WebGL build on every push/PR;
+# deploy the WebGL build to GitHub Pages when it lands on master.
+#
+# REQUIRED SECRETS (Settings → Secrets and variables → Actions):
+#   UNITY_LICENSE   contents of your Unity_lic.ulf (Personal license)  — or —
+#   UNITY_EMAIL / UNITY_PASSWORD / UNITY_SERIAL  (Plus/Pro)
+#   See https://game.ci/docs/github/activation for how to obtain the .ulf.
+# REQUIRED SETTINGS:
+#   Settings → Pages → Source = "GitHub Actions".
+# NOTE: GameCI reads the editor version from ProjectSettings/ProjectVersion.txt,
+#   so CI tracks whatever LTS the project is upgraded to (ADR-0001). This will
+#   NOT succeed until the project is on a GameCI-supported LTS (still 2018.3 today).
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test (EditMode + PlayMode)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-test-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-test-
+            Library-
+      - name: Run tests
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: artifacts
+
+  build:
+    name: Build WebGL
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-webgl-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-webgl-
+            Library-
+      - name: Build
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+        with:
+          targetPlatform: WebGL
+          buildName: WebGL
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WebGL-build
+          path: build/WebGL
+
+  deploy:
+    name: Deploy to GitHub Pages
+    # Only publish builds that have landed on master.
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: WebGL-build
+          path: build/WebGL
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # unity-builder emits build/<platform>/<buildName>; index.html lives here.
+          path: build/WebGL/WebGL
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

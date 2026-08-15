@@ -1,0 +1,36 @@
+# EditorConfig — https://editorconfig.org
+# Baseline style for the Two Cats project. Mirrors Unity/C# conventions.
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+[*.cs]
+indent_size = 4
+# Naming & style intent (enforced by convention today; analyzers later)
+dotnet_sort_system_directives_first = true
+csharp_new_line_before_open_brace = all
+csharp_prefer_braces = true:suggestion
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_property = false:suggestion
+
+# Unity-managed & serialized formats: don't reformat, keep as Unity writes them.
+[*.{unity,prefab,asset,mat,anim,controller,meta,uss,uxml}]
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = false
+insert_final_newline = false
+
+[*.{json,yml,yaml}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false  # trailing spaces are meaningful (line breaks)
+
+[Makefile]
+indent_style = tab
