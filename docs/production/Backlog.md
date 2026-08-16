@@ -19,7 +19,7 @@ Legend: **P1** now-ish · **P2** soon · **P3** eventually · ✅ done · 🔒 n
 | 0.1 | Upgrade Unity 2018.3 → target LTS; fix compile errors | P1 | `docs/technical/baseline/DependencyAudit.md`, ADR-0001 | ✅ done |
 | 0.2 | Migrate CrossPlatformInput → Input System | P1 | `docs/technical/baseline/DependencyAudit.md` | ✅ done |
 | 0.3 | Swap vendored 2d-extras → `com.unity.2d.tilemap.extras`; drop unused pkgs/modules | P1 | `docs/technical/baseline/DependencyAudit.md` | ✅ done |
-| 0.4 | Phase-1 bug fixes (see "Known defects" below) | P1 | `docs/technical/baseline/CodeReview.md` | 🔒 pending playtest |
+| 0.4 | Phase-1 bug fixes (see "Known defects" below) | P1 | `docs/technical/baseline/CodeReview.md` | ✅ done |
 | 0.5 | Scaffolding: CLAUDE.md, .editorconfig, LICENSE, BACKLOG, ADR template | P1 | — | ✅ done |
 | 0.6 | CI/CD: GameCI build+test on push, deploy WebGL to Pages on merge | P1 | `docs/production/Playbook.md` §3 | todo |
 | 0.7 | Assembly definitions (Core/Gameplay/UI) + first EditMode test | P2 | `docs/technical/Architecture.md` | 🔒 partial |
@@ -39,8 +39,7 @@ Source: `docs/technical/baseline/CodeReview.md` Technical-Debt table. Fix these 
 - [x] **#8** `MovingPlatform`: empty `Start`; unreachable `Destroy` branch. *(Low)* — removed both; waypoint wraparound simplified to modulo.
 - [x] **#9** `OptionsControllers.defaultVolume`: `[SerializeField] public static` is a no-op. *(Low)* — attribute removed from both static fields.
 
-All 9 are C#-only fixes, no scene/prefab edits — 🔒 still needs an Editor playtest pass before
-this row flips to ✅ (see Roadmap.md status callout for what to check).
+All 9 are C#-only fixes, no scene/prefab edits — playtested clean, 2026-08-15.
 
 ## Tooling to extract (not before the pattern repeats — see ROADMAP §Tooling)
 

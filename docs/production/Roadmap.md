@@ -42,10 +42,11 @@
 > already scoped for Wave 1, this is the Phase-1 stopgap (#7), `MovingPlatform` dead
 > `Start`/unreachable `Destroy` branch removed (#8), `OptionsControllers`' no-op
 > `[SerializeField] public static` attributes removed (#9). All C#-only, no scene/prefab
-> edits — 🔒 **needs an Editor playtest pass** (all 4 levels: jump feel, moving platforms,
-> coin pickup, level-exit trigger, life loss/game-over) before merge. **Next (needs Unity
-> Editor, yours to run):** verify 0.4, then 0.7 asmdefs. Master merge for 0.2+0.3+0.4 still
-> deferred — revisit when convenient. Detail in `docs/production/Backlog.md`.
+> edits. Playtested clean. **Remaining Wave 0 work:** 0.6 CI/CD needs a green-run check now
+> that the LTS upgrade landed, 0.7 asmdefs not started. Master merge for 0.2+0.3+0.4 still
+> deferred — revisit when convenient. The Wave 0 🚦 gate (play at the Pages URL, all 4 levels,
+> green CI) isn't reached yet — needs 0.6 verified and the branches on master. Detail in
+> `docs/production/Backlog.md`.
 
 ## How to use this
 - Each **Wave** is a milestone that ends in something you can **play and approve**.
@@ -64,7 +65,7 @@
 | 0.1 | ✅ Branch; upgrade **Unity 2018.3 → 6000.5.8f1**; fix compile errors | `docs/technical/baseline/DependencyAudit.md`, ADR-0001 |
 | 0.2 | ✅ Migrate input **CrossPlatformInput → Input System** | `docs/technical/baseline/DependencyAudit.md` |
 | 0.3 | ✅ Swap vendored **2d-extras → package**; remove unused packages/modules | `docs/technical/baseline/DependencyAudit.md` |
-| 0.4 | 🔒 **Phase-1 bug fixes:** teardown NRE, `SetDifficulty`, jump `+=`→`=`, player-identity checks (needs Editor playtest) | `docs/technical/baseline/CodeReview.md`, `docs/production/KnownRisks.md` |
+| 0.4 | ✅ **Phase-1 bug fixes:** teardown NRE, `SetDifficulty`, jump `+=`→`=`, player-identity checks | `docs/technical/baseline/CodeReview.md`, `docs/production/KnownRisks.md` |
 | 0.5 | **Scaffolding (Tier 1):** `CLAUDE.md`, `.editorconfig`, `LICENSE`, `docs/production/Backlog.md`, ADR template | `docs/production/Playbook.md` §1 |
 | 0.6 | **CI/CD:** GameCI build + test on push → **deploy WebGL to GitHub Pages** on merge | `docs/production/Playbook.md` §3 |
 | 0.7 | **Assembly definitions** (`Core`/`Gameplay`/`UI`) + first EditMode test | `docs/technical/Architecture.md` |
