@@ -13,12 +13,14 @@ name: CI — test, build & deploy
 #   so CI tracks whatever LTS the project is upgraded to (ADR-0001). Project is
 #   on 6000.5.8f1 as of Wave 0 item 0.1 — this workflow has not yet had a run
 #   verified against that version (needs secrets + Pages source configured first).
+# PARKED (2026-08-15, see docs/production/Backlog.md 0.6): UNITY_LICENSE activation
+#   is unresolved, so every run currently fails at the license step. Auto-triggers
+#   are disabled below to avoid burning Actions minutes on guaranteed-failing runs;
+#   re-enable the push/pull_request triggers once activation is sorted out. Until
+#   then this only runs via manual dispatch (Actions tab -> this workflow -> Run
+#   workflow), e.g. to test a fix.
 
 on:
-  push:
-    branches: [master]
-  pull_request:
-    branches: [master]
   workflow_dispatch:
 
 concurrency:
