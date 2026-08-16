@@ -11,8 +11,9 @@
 > (those remain as detail references).
 >
 > **Current status:** 🟢 **Wave 0 in progress.** Done: **0.5** scaffolding (`CLAUDE.md`,
-> `.editorconfig`, `LICENSE`, `docs/production/Backlog.md`, `docs/adr/` template + ADR-0001) and
-> **0.6** CI/CD workflow (`.github/workflows/ci.yml`; won't go green until the LTS upgrade).
+> `.editorconfig`, `LICENSE`, `docs/production/Backlog.md`, `docs/adr/` template + ADR-0001).
+> **0.6** CI/CD workflow exists (`.github/workflows/ci.yml`) but is parked — see the 0.6 note
+> below.
 > **0.1 LTS upgrade done (2026-08-15):** Editor-driven upgrade to **Unity 6000.5.8f1**
 > (ADR-0001, Accepted); compile errors fixed; all 4 levels + MainMenu/OptionsMenu/Success
 > playtested clean on the new engine, 🚦 gate passed.
@@ -58,13 +59,22 @@
 > suite (`PlayerPrefsControllerTests`, 4 tests covering the volume/difficulty clamping this
 > segment's 0.4 work touched). File moves only — every `.cs`/`.meta` pair moved together so
 > GUIDs (and therefore scene/prefab script references) are untouched; no scene/prefab edits.
-> 🔒 **Needs an Editor pass to verify**: open the project, confirm it compiles clean with no
-> asmdef errors, run the EditMode test (Window → General → Test Runner), then playtest all 4
-> levels + menus same as 0.4. **Remaining Wave 0 work:** 0.6 CI/CD still needs a green run
-> (secrets + Pages source are GitHub web-console settings, not shell-checkable) and the stale
-> "still 2018.3" comment in `ci.yml` is now corrected. The Wave 0 🚦 gate (play at the Pages
-> URL, all 4 levels, green CI) isn't reached yet — needs 0.6 verified and this 0.7 work
-> Editor-confirmed. Detail in `docs/production/Backlog.md`.
+> Editor-verified clean (2026-08-15): project compiles with no asmdef errors, all 4 EditMode
+> tests pass in the Test Runner.
+> **0.6 CI/CD parked (2026-08-15):** workflow (`.github/workflows/ci.yml`) and docs are in
+> place, but the `UNITY_LICENSE` GitHub secret won't validate — GameCI's test/build jobs
+> report "No valid license activation strategy could be determined" even with a confirmed
+> non-empty, correctly-placed repository secret (ruled out: wrong section, `github-pages`
+> Environment shadowing, stale/empty file, workflow YAML mismatch vs. GameCI's current
+> official example). Root cause undetermined — `gh secret set` from the file directly (bypasses
+> browser-textarea paste as a suspect) was the next diagnostic step but wasn't pursued since
+> `gh` CLI isn't installed. **Decision:** deprioritized — Editor-based playtesting substitutes
+> for the Pages-URL playtest for now; revisit CI/Pages when it's actually needed (e.g. sharing
+> a build, or once more automated coverage exists to make green-CI worth chasing). The Wave 0
+> 🚦 gate's literal "play at the Pages URL, green CI" criteria is therefore **not met and not
+> being pursued right now** — treating the Editor-playtested equivalent (all 4 levels + menus,
+> confirmed after 0.1–0.4 and again after 0.7) as the practical substitute. Detail in
+> `docs/production/Backlog.md`.
 
 ## How to use this
 - Each **Wave** is a milestone that ends in something you can **play and approve**.
@@ -84,12 +94,15 @@
 | 0.2 | ✅ Migrate input **CrossPlatformInput → Input System** | `docs/technical/baseline/DependencyAudit.md` |
 | 0.3 | ✅ Swap vendored **2d-extras → package**; remove unused packages/modules | `docs/technical/baseline/DependencyAudit.md` |
 | 0.4 | ✅ **Phase-1 bug fixes:** teardown NRE, `SetDifficulty`, jump `+=`→`=`, player-identity checks | `docs/technical/baseline/CodeReview.md`, `docs/production/KnownRisks.md` |
-| 0.5 | **Scaffolding (Tier 1):** `CLAUDE.md`, `.editorconfig`, `LICENSE`, `docs/production/Backlog.md`, ADR template | `docs/production/Playbook.md` §1 |
-| 0.6 | **CI/CD:** GameCI build + test on push → **deploy WebGL to GitHub Pages** on merge | `docs/production/Playbook.md` §3 |
-| 0.7 | ✅ **Assembly definitions** (`Core`/`Gameplay`/`UI`) + first EditMode test (needs Editor playtest) | `docs/technical/Architecture.md` |
+| 0.5 | ✅ **Scaffolding (Tier 1):** `CLAUDE.md`, `.editorconfig`, `LICENSE`, `docs/production/Backlog.md`, ADR template | `docs/production/Playbook.md` §1 |
+| 0.6 | 🅿️ **Parked** — CI/CD: GameCI build + test on push → deploy WebGL to GitHub Pages on merge. Workflow exists; `UNITY_LICENSE` activation unresolved | `docs/production/Playbook.md` §3 |
+| 0.7 | ✅ **Assembly definitions** (`Core`/`Gameplay`/`UI`) + first EditMode test — Editor-verified | `docs/technical/Architecture.md` |
 
-**🚦 Gate:** you play the *existing* game on the new engine at the Pages URL, confirm all 4
-levels still work. **Exit criteria:** green CI, playable build, no regressions.
+**🚦 Gate:** you play the *existing* game on the new engine, confirm all 4 levels still work.
+**Exit criteria (revised 2026-08-15):** no regressions, confirmed via Editor playtest — the
+original "green CI + Pages URL" criteria are deferred with 0.6 (see above) rather than blocking
+the gate. Individual pieces have been Editor-playtested clean along the way (0.1–0.4, 0.7); an
+explicit end-to-end Wave 0 gate sign-off from you is still outstanding.
 **Effort:** ~4–6 days (the LTS upgrade is the riskiest single step — done in isolation).
 
 ---

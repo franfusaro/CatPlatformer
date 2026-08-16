@@ -21,8 +21,8 @@ Legend: **P1** now-ish · **P2** soon · **P3** eventually · ✅ done · 🔒 n
 | 0.3 | Swap vendored 2d-extras → `com.unity.2d.tilemap.extras`; drop unused pkgs/modules | P1 | `docs/technical/baseline/DependencyAudit.md` | ✅ done |
 | 0.4 | Phase-1 bug fixes (see "Known defects" below) | P1 | `docs/technical/baseline/CodeReview.md` | ✅ done |
 | 0.5 | Scaffolding: CLAUDE.md, .editorconfig, LICENSE, BACKLOG, ADR template | P1 | — | ✅ done |
-| 0.6 | CI/CD: GameCI build+test on push, deploy WebGL to Pages on merge | P1 | `docs/production/Playbook.md` §3 | todo |
-| 0.7 | Assembly definitions (Core/Gameplay/UI) + first EditMode test | P2 | `docs/technical/Architecture.md` | 🔒 pending Editor verify |
+| 0.6 | CI/CD: GameCI build+test on push, deploy WebGL to Pages on merge | P1 | `docs/production/Playbook.md` §3 | 🅿️ parked — see note |
+| 0.7 | Assembly definitions (Core/Gameplay/UI) + first EditMode test | P2 | `docs/technical/Architecture.md` | ✅ done, Editor-verified |
 
 ## Known defects (Phase-1 fix set → item 0.4)
 
@@ -40,6 +40,22 @@ Source: `docs/technical/baseline/CodeReview.md` Technical-Debt table. Fix these 
 - [x] **#9** `OptionsControllers.defaultVolume`: `[SerializeField] public static` is a no-op. *(Low)* — attribute removed from both static fields.
 
 All 9 are C#-only fixes, no scene/prefab edits — playtested clean, 2026-08-15.
+
+## 0.6 CI/CD — parked (2026-08-15)
+
+`.github/workflows/ci.yml` exists (GameCI test + WebGL build, deploy to Pages on `master`
+push) and is wired correctly (matches GameCI's current official example verbatim). Blocked on
+`UNITY_LICENSE` activation: GameCI's jobs report "No valid license activation strategy could be
+determined" even with a confirmed non-empty `Unity_lic.ulf` correctly saved as a **repository**
+secret (not shadowed by the `github-pages` Environment — checked). Root cause not found; ruled
+out wrong secret location, stale run, empty file, and workflow-syntax mismatch. Next diagnostic
+step would be `gh secret set UNITY_LICENSE < Unity_lic.ulf` to rule out browser-textarea paste
+corruption, but `gh` CLI isn't installed on the dev machine and this wasn't pursued further.
+**Decision:** not worth chasing right now — Editor playtesting covers verification needs.
+Revisit when a build actually needs to be shared/deployed, or once test coverage grows enough
+to make a green-CI gate worth the setup cost. The GameCI activation docs also note the
+previous `game-ci/unity-request-activation-file` action is deprecated; current guidance is
+manual activation via Unity Hub (Preferences → Licenses → Add → free personal license).
 
 ## Tooling to extract (not before the pattern repeats — see ROADMAP §Tooling)
 
