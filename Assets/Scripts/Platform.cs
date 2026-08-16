@@ -8,6 +8,8 @@ public class Platform : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D otherCollider)
     {
+        if (otherCollider.GetComponent<Player>() == null) { return; }
+
         if (startMovingOnPlayerCollsion)
         {
             var movingPlatform = GetComponentInParent<MovingPlatform>();
@@ -16,15 +18,14 @@ public class Platform : MonoBehaviour
                 movingPlatform.move = true;
             }
         }
-    }
 
-    private void OnTriggerStay2D(Collider2D otherCollider)
-    {
         otherCollider.gameObject.transform.parent = transform;
     }
 
     private void OnTriggerExit2D(Collider2D otherCollider)
     {
+        if (otherCollider.GetComponent<Player>() == null) { return; }
+
         otherCollider.gameObject.transform.parent = null;
     }
 }

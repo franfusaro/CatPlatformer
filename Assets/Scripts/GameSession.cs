@@ -30,8 +30,7 @@ public class GameSession : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        livesText.text = playerLives.ToString();
-        scoreText.text = score.ToString();
+        RefreshHUD();
     }
 
     public void ProcessPlayerDeath()
@@ -52,12 +51,18 @@ public class GameSession : MonoBehaviour
     public void AddToScore(int pointsToAdd)
     {
         score += pointsToAdd;
-        scoreText.text = score.ToString();
+        RefreshHUD();
     }
 
     private void TakeLife()
     {
         playerLives--;
-        livesText.text = playerLives.ToString();
+        RefreshHUD();
+    }
+
+    private void RefreshHUD()
+    {
+        if (livesText != null) { livesText.text = playerLives.ToString(); }
+        if (scoreText != null) { scoreText.text = score.ToString(); }
     }
 }

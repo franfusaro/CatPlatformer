@@ -6,6 +6,8 @@ public class LevelExit : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D otherCollider)
     {
+        if (otherCollider.GetComponent<Player>() == null) { return; }
+
         FindObjectOfType<LevelLoader>().LoadNextLevel();
     }
 }

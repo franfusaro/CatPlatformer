@@ -6,10 +6,10 @@ using UnityEngine.UI;
 public class OptionsControllers : MonoBehaviour
 {
     [SerializeField] Slider volumeSlider;
-    [SerializeField] public static float defaultVolume = 0.2f;
+    public static float defaultVolume = 0.2f;
 
     [SerializeField] Slider difficultySlider;
-    [SerializeField] public static float defaultDifficulty = 1f;
+    public static float defaultDifficulty = 1f;
 
 
     // Start is called before the first frame update

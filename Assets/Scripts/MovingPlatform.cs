@@ -11,11 +11,6 @@ public class MovingPlatform : MonoBehaviour
 
     int waypointIndex = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -27,24 +22,15 @@ public class MovingPlatform : MonoBehaviour
 
     private void Move()
     {
-        if (waypointIndex <= waypoints.Count - 1)
-        {
-            var targetPos = waypoints[waypointIndex].transform.position;
-            var movementThisFrame = speed * Time.deltaTime;
-            platform.transform.position = Vector2.MoveTowards(platform.transform.position, targetPos, movementThisFrame);
+        if (waypoints.Count == 0) { return; }
 
-            if (Vector2.Distance(targetPos, platform.transform.position) < Vector2.kEpsilon)
-            {
-                waypointIndex++;
-                if (waypointIndex == waypoints.Count)
-                {
-                    waypointIndex = 0;
-                }
-            }
-        }
-        else
+        var targetPos = waypoints[waypointIndex].transform.position;
+        var movementThisFrame = speed * Time.deltaTime;
+        platform.transform.position = Vector2.MoveTowards(platform.transform.position, targetPos, movementThisFrame);
+
+        if (Vector2.Distance(targetPos, platform.transform.position) < Vector2.kEpsilon)
         {
-            Destroy(gameObject);
+            waypointIndex = (waypointIndex + 1) % waypoints.Count;
         }
     }
 }

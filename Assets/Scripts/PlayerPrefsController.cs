@@ -29,16 +29,16 @@ public class PlayerPrefsController : MonoBehaviour
 
     public static void SetDifficulty(float difficulty)
     {
-        if (!PlayerPrefs.HasKey(DIFFICULTY_KEY))
-        {
-            SetMasterVolume(Mathf.Clamp(OptionsControllers.defaultDifficulty, MIN_VOLUME, MAX_VOLUME));
-        }
-        difficulty = Mathf.Clamp(difficulty, MIN_VOLUME, MAX_VOLUME);
+        difficulty = Mathf.Clamp(difficulty, MIN_DIFFICULTY, MAX_DIFFICULTY);
         PlayerPrefs.SetFloat(DIFFICULTY_KEY, difficulty);
     }
 
     public static float GetDifficulty()
     {
+        if (!PlayerPrefs.HasKey(DIFFICULTY_KEY))
+        {
+            SetDifficulty(OptionsControllers.defaultDifficulty);
+        }
         return PlayerPrefs.GetFloat(DIFFICULTY_KEY);
     }
 }

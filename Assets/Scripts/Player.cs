@@ -97,8 +97,7 @@ public class Player : MonoBehaviour
         if (!PlayerIsOnGround()) { return; }
         if (jumpAction.WasPressedThisFrame())
         {
-            Vector2 jumpVelocityToAdd = new Vector2(0, jumpSpeed);
-            myRigidBody.linearVelocity += jumpVelocityToAdd;
+            myRigidBody.linearVelocity = new Vector2(myRigidBody.linearVelocity.x, jumpSpeed);
         }
     }
 

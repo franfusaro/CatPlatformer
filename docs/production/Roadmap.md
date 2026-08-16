@@ -28,9 +28,24 @@
 > manual re-pointing was needed. Hit a stale-Library snag along the way (duplicate GUID during
 > the swap corrupted the package's cached copy, then an import cache also needed a full
 > refresh) — resolved by clearing `Library/PackageCache/<pkg>` + `Library/ScriptAssemblies`
-> and an `Assets > Reimport All`; playtested clean after. **Next (needs Unity Editor, yours to
-> run):** 0.4 Phase-1 bug fixes, then 0.7 asmdefs. Master merge for 0.2+0.3 still deferred —
-> revisit when convenient. Detail in `docs/production/Backlog.md`.
+> and an `Assets > Reimport All`; playtested clean after.
+> **0.4 Phase-1 bug fixes done (2026-08-15):** all 9 defects from `CodeReview.md`'s
+> Technical-Debt table fixed — `LevelLoader` destroy-then-null NRE (#1), dropped
+> `LoadYouLoseScene` (#2 — dead code pointing at a `"LoseScreen"` scene that was never built
+> or wired to any UI; revisit as a real feature later instead of a stub), `PlayerPrefsController
+> .SetDifficulty` copy-paste bug (#3), `Player.Jump` `+=`→`=` (#4), `Platform` re-parenting
+> moved from `OnTriggerStay2D` (every frame) to `OnTriggerEnter2D`/`Exit2D` (once) (#5),
+> player-identity checks added to `Platform`/`CoinPickup`/`LevelExit` via `GetComponent<Player>()`
+> — no tag/prefab edit needed, `Player.cs` doubles as the marker component since it already
+> lives on the same GameObject as the colliders (#6), `GameSession` HUD refs null-guarded
+> against going stale across scenes — the full fix is the ScriptableObject-state refactor
+> already scoped for Wave 1, this is the Phase-1 stopgap (#7), `MovingPlatform` dead
+> `Start`/unreachable `Destroy` branch removed (#8), `OptionsControllers`' no-op
+> `[SerializeField] public static` attributes removed (#9). All C#-only, no scene/prefab
+> edits — 🔒 **needs an Editor playtest pass** (all 4 levels: jump feel, moving platforms,
+> coin pickup, level-exit trigger, life loss/game-over) before merge. **Next (needs Unity
+> Editor, yours to run):** verify 0.4, then 0.7 asmdefs. Master merge for 0.2+0.3+0.4 still
+> deferred — revisit when convenient. Detail in `docs/production/Backlog.md`.
 
 ## How to use this
 - Each **Wave** is a milestone that ends in something you can **play and approve**.
@@ -48,8 +63,8 @@
 |---|-------------|-----|
 | 0.1 | ✅ Branch; upgrade **Unity 2018.3 → 6000.5.8f1**; fix compile errors | `docs/technical/baseline/DependencyAudit.md`, ADR-0001 |
 | 0.2 | ✅ Migrate input **CrossPlatformInput → Input System** | `docs/technical/baseline/DependencyAudit.md` |
-| 0.3 | Swap vendored **2d-extras → package**; remove unused packages/modules | `docs/technical/baseline/DependencyAudit.md` |
-| 0.4 | **Phase-1 bug fixes:** LoseScreen, teardown NRE, `SetDifficulty`, jump `+=`→`=`, player-identity checks | `docs/technical/baseline/CodeReview.md`, `docs/production/KnownRisks.md` |
+| 0.3 | ✅ Swap vendored **2d-extras → package**; remove unused packages/modules | `docs/technical/baseline/DependencyAudit.md` |
+| 0.4 | 🔒 **Phase-1 bug fixes:** teardown NRE, `SetDifficulty`, jump `+=`→`=`, player-identity checks (needs Editor playtest) | `docs/technical/baseline/CodeReview.md`, `docs/production/KnownRisks.md` |
 | 0.5 | **Scaffolding (Tier 1):** `CLAUDE.md`, `.editorconfig`, `LICENSE`, `docs/production/Backlog.md`, ADR template | `docs/production/Playbook.md` §1 |
 | 0.6 | **CI/CD:** GameCI build + test on push → **deploy WebGL to GitHub Pages** on merge | `docs/production/Playbook.md` §3 |
 | 0.7 | **Assembly definitions** (`Core`/`Gameplay`/`UI`) + first EditMode test | `docs/technical/Architecture.md` |

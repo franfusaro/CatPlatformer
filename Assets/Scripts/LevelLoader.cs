@@ -15,7 +15,6 @@ public class LevelLoader : MonoBehaviour
         if (scenePersist != null)
         {
             Destroy(scenePersist.gameObject);
-            scenePersist.gameObject.SetActive(false);
         }
         SceneManager.LoadScene("MainMenu");
         Time.timeScale = 1;
@@ -43,14 +42,12 @@ public class LevelLoader : MonoBehaviour
         yield return new WaitForSecondsRealtime(LevelLoadDelay);
         Time.timeScale = 1f;
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        Destroy(FindObjectOfType<ScenePersist>().gameObject);
-        FindObjectOfType<ScenePersist>().gameObject.SetActive(false);
+        var scenePersist = FindObjectOfType<ScenePersist>();
+        if (scenePersist != null)
+        {
+            Destroy(scenePersist.gameObject);
+        }
         SceneManager.LoadScene(currentSceneIndex + 1);
-    }
-
-    public void LoadYouLoseScene()
-    {
-        SceneManager.LoadScene("LoseScreen");
     }
 
     public void LoadOptionsMenu()
