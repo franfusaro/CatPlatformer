@@ -19,9 +19,18 @@
 > **0.2 Input System migration done (2026-08-15):** `Player.cs` moved off the deprecated
 > `CrossPlatformInput` Standard Asset onto `UnityEngine.InputSystem` (code-only `InputAction`s,
 > no asset); vendored `CrossPlatformInput` folders deleted; `activeInputHandler` set to Both
-> so legacy-`StandaloneInputModule` menus keep working unchanged. **Next (needs Unity Editor,
-> yours to run):** playtest 0.2, then 0.3 package swaps. Then I do 0.4 bug fixes + 0.7 asmdefs.
-> Detail in `docs/production/Backlog.md`.
+> so legacy-`StandaloneInputModule` menus keep working unchanged. Playtested clean.
+> **0.3 package swaps done (2026-08-15):** removed unused `com.unity.ads`/
+> `com.unity.analytics`/`com.unity.purchasing` (+ generated `BillingMode.json` cruft, no code
+> referenced any of them). Added `com.unity.2d.tilemap.extras` 8.0.3 and deleted the vendored
+> `Standard Assets/2d-extras-master/` — its `RuleTile` script (used by `RockPlatforms.asset`,
+> `GrassPlatforms.asset`, `Dirt.asset`) shares the exact same GUID as the package's, so no
+> manual re-pointing was needed. Hit a stale-Library snag along the way (duplicate GUID during
+> the swap corrupted the package's cached copy, then an import cache also needed a full
+> refresh) — resolved by clearing `Library/PackageCache/<pkg>` + `Library/ScriptAssemblies`
+> and an `Assets > Reimport All`; playtested clean after. **Next (needs Unity Editor, yours to
+> run):** 0.4 Phase-1 bug fixes, then 0.7 asmdefs. Master merge for 0.2+0.3 still deferred —
+> revisit when convenient. Detail in `docs/production/Backlog.md`.
 
 ## How to use this
 - Each **Wave** is a milestone that ends in something you can **play and approve**.
