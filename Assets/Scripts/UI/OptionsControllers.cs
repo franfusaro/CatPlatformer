@@ -6,10 +6,7 @@ using UnityEngine.UI;
 public class OptionsControllers : MonoBehaviour
 {
     [SerializeField] Slider volumeSlider;
-    public static float defaultVolume = 0.2f;
-
     [SerializeField] Slider difficultySlider;
-    public static float defaultDifficulty = 1f;
 
 
     // Start is called before the first frame update
@@ -41,8 +38,8 @@ public class OptionsControllers : MonoBehaviour
 
     public void SetDefaults()
     {
-        PlayerPrefsController.SetMasterVolume(defaultVolume);
-        //PlayerPrefsController.SetDifficulty(defaultDifficulty);
+        PlayerPrefsController.SetMasterVolume(PlayerPrefsController.defaultVolume);
+        //PlayerPrefsController.SetDifficulty(PlayerPrefsController.defaultDifficulty);
         volumeSlider.value = PlayerPrefsController.GetMasterVolume();
         //difficultySlider.value = PlayerPrefsController.GetDifficulty();
     }

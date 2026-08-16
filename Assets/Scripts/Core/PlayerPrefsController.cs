@@ -7,6 +7,9 @@ public class PlayerPrefsController : MonoBehaviour
     public const string MASTER_VOLUME_KEY = "master_volume";
     public const string DIFFICULTY_KEY = "difficulty";
 
+    public const float defaultVolume = 0.2f;
+    public const float defaultDifficulty = 1f;
+
     private const float MIN_VOLUME = 0f;
     private const float MAX_VOLUME = 1f;
     private const float MIN_DIFFICULTY = 0f;
@@ -22,7 +25,7 @@ public class PlayerPrefsController : MonoBehaviour
     {
         if (!PlayerPrefs.HasKey(MASTER_VOLUME_KEY))
         {
-            SetMasterVolume(OptionsControllers.defaultVolume);
+            SetMasterVolume(defaultVolume);
         }
         return PlayerPrefs.GetFloat(MASTER_VOLUME_KEY);
     }
@@ -37,7 +40,7 @@ public class PlayerPrefsController : MonoBehaviour
     {
         if (!PlayerPrefs.HasKey(DIFFICULTY_KEY))
         {
-            SetDifficulty(OptionsControllers.defaultDifficulty);
+            SetDifficulty(defaultDifficulty);
         }
         return PlayerPrefs.GetFloat(DIFFICULTY_KEY);
     }

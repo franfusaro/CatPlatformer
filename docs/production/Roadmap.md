@@ -42,11 +42,29 @@
 > already scoped for Wave 1, this is the Phase-1 stopgap (#7), `MovingPlatform` dead
 > `Start`/unreachable `Destroy` branch removed (#8), `OptionsControllers`' no-op
 > `[SerializeField] public static` attributes removed (#9). All C#-only, no scene/prefab
-> edits. Playtested clean. **Remaining Wave 0 work:** 0.6 CI/CD needs a green-run check now
-> that the LTS upgrade landed, 0.7 asmdefs not started. Master merge for 0.2+0.3+0.4 still
-> deferred — revisit when convenient. The Wave 0 🚦 gate (play at the Pages URL, all 4 levels,
-> green CI) isn't reached yet — needs 0.6 verified and the branches on master. Detail in
-> `docs/production/Backlog.md`.
+> edits. Playtested clean. **0.2+0.3+0.4 merged to master (2026-08-15):** clean fast-forward,
+> no conflicts (branches were linear descendants of master).
+> **0.7 assembly definitions done (2026-08-15):** all 16 scripts sorted into `Core`/`Gameplay`/`UI`
+> asmdefs under `Assets/Scripts/{Core,Gameplay,UI}/`, matching the dependency direction
+> `docs/technical/Wave1Architecture.md` already commits to for Wave 1 (`UI`/`Gameplay` → `Core`
+> only, `UI` never → `Gameplay`) — real compile-time boundary, no cycles. Sorting exposed one
+> genuine circular dependency the boundary wouldn't have allowed to compile:
+> `PlayerPrefsController` read `OptionsControllers.defaultVolume`/`defaultDifficulty` while
+> `OptionsControllers` already called into `PlayerPrefsController` — fixed by moving those two
+> constants onto `PlayerPrefsController` (where the defaulting logic actually lives), making the
+> dependency one-way (`UI → Core`). Namespaces (`TwoCats.*`) deliberately deferred to Wave 1 —
+> adding a different interim namespace now would just be churn once that convention lands.
+> Added `Assets/Tests/EditMode/` with `Core.EditModeTests.asmdef` and a first EditMode test
+> suite (`PlayerPrefsControllerTests`, 4 tests covering the volume/difficulty clamping this
+> segment's 0.4 work touched). File moves only — every `.cs`/`.meta` pair moved together so
+> GUIDs (and therefore scene/prefab script references) are untouched; no scene/prefab edits.
+> 🔒 **Needs an Editor pass to verify**: open the project, confirm it compiles clean with no
+> asmdef errors, run the EditMode test (Window → General → Test Runner), then playtest all 4
+> levels + menus same as 0.4. **Remaining Wave 0 work:** 0.6 CI/CD still needs a green run
+> (secrets + Pages source are GitHub web-console settings, not shell-checkable) and the stale
+> "still 2018.3" comment in `ci.yml` is now corrected. The Wave 0 🚦 gate (play at the Pages
+> URL, all 4 levels, green CI) isn't reached yet — needs 0.6 verified and this 0.7 work
+> Editor-confirmed. Detail in `docs/production/Backlog.md`.
 
 ## How to use this
 - Each **Wave** is a milestone that ends in something you can **play and approve**.
@@ -68,7 +86,7 @@
 | 0.4 | ✅ **Phase-1 bug fixes:** teardown NRE, `SetDifficulty`, jump `+=`→`=`, player-identity checks | `docs/technical/baseline/CodeReview.md`, `docs/production/KnownRisks.md` |
 | 0.5 | **Scaffolding (Tier 1):** `CLAUDE.md`, `.editorconfig`, `LICENSE`, `docs/production/Backlog.md`, ADR template | `docs/production/Playbook.md` §1 |
 | 0.6 | **CI/CD:** GameCI build + test on push → **deploy WebGL to GitHub Pages** on merge | `docs/production/Playbook.md` §3 |
-| 0.7 | **Assembly definitions** (`Core`/`Gameplay`/`UI`) + first EditMode test | `docs/technical/Architecture.md` |
+| 0.7 | ✅ **Assembly definitions** (`Core`/`Gameplay`/`UI`) + first EditMode test (needs Editor playtest) | `docs/technical/Architecture.md` |
 
 **🚦 Gate:** you play the *existing* game on the new engine at the Pages URL, confirm all 4
 levels still work. **Exit criteria:** green CI, playable build, no regressions.

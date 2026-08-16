@@ -22,7 +22,7 @@ Legend: **P1** now-ish · **P2** soon · **P3** eventually · ✅ done · 🔒 n
 | 0.4 | Phase-1 bug fixes (see "Known defects" below) | P1 | `docs/technical/baseline/CodeReview.md` | ✅ done |
 | 0.5 | Scaffolding: CLAUDE.md, .editorconfig, LICENSE, BACKLOG, ADR template | P1 | — | ✅ done |
 | 0.6 | CI/CD: GameCI build+test on push, deploy WebGL to Pages on merge | P1 | `docs/production/Playbook.md` §3 | todo |
-| 0.7 | Assembly definitions (Core/Gameplay/UI) + first EditMode test | P2 | `docs/technical/Architecture.md` | 🔒 partial |
+| 0.7 | Assembly definitions (Core/Gameplay/UI) + first EditMode test | P2 | `docs/technical/Architecture.md` | 🔒 pending Editor verify |
 
 ## Known defects (Phase-1 fix set → item 0.4)
 

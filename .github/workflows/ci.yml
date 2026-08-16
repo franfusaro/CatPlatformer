@@ -10,8 +10,9 @@ name: CI — test, build & deploy
 # REQUIRED SETTINGS:
 #   Settings → Pages → Source = "GitHub Actions".
 # NOTE: GameCI reads the editor version from ProjectSettings/ProjectVersion.txt,
-#   so CI tracks whatever LTS the project is upgraded to (ADR-0001). This will
-#   NOT succeed until the project is on a GameCI-supported LTS (still 2018.3 today).
+#   so CI tracks whatever LTS the project is upgraded to (ADR-0001). Project is
+#   on 6000.5.8f1 as of Wave 0 item 0.1 — this workflow has not yet had a run
+#   verified against that version (needs secrets + Pages source configured first).
 
 on:
   push:
